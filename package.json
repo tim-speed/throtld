@@ -1,0 +1,36 @@
+{
+  "name": "throtld",
+  "version": "0.0.1",
+  "description": "Node based service for managing and throttling groups feature flags based on JSON web tokens",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tim-speed/throtld.git"
+  },
+  "keywords": [
+    "throttle",
+    "feature",
+    "flag"
+  ],
+  "author": "Tim Speed",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tim-speed/throtld/issues"
+  },
+  "homepage": "https://github.com/tim-speed/throtld#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "js-yaml": "^3.8.4",
+    "jsonwebtoken": "^7.4.0",
+    "jws": "^3.1.4",
+    "log4js": "^1.1.1"
+  },
+  "devDependencies": {
+    "mocha": "^3.3.0",
+    "progress": "^2.0.0",
+    "supertest": "^3.0.0"
+  }
+}

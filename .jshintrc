@@ -1,0 +1,16 @@
+{
+    "esversion": 6,
+    "quotmark": "single",
+
+    "unused": "vars",
+    "undef": true,
+    "shadow": "outer",
+
+    "loopfunc": true,
+    "evil": true,
+    "boss": true,
+    "expr": true,
+
+    "node": true,
+    "mocha": true
+}
