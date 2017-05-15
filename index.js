@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const auth = require('./lib/auth');
 const logger = require('./lib/logger')('init');
 
 // Init our express app
@@ -77,8 +78,15 @@ function createRoute(filePath, fileName, parentRoute) {
         app[routeMethod](routePath, route);
       } else {
         // Complex route
-        // TODO: Add support for middleware
-        app[routeMethod](routePath, route.handler);
+        const handlerChain = [];
+        // First set the auth handler if needed
+        if (route.auth) {
+          handlerChain.push(auth.authHandler);
+        }
+        // Add our route handler at the end of the chain
+        handlerChain.push(route.handler);
+        // Finally set the route
+        app[routeMethod](routePath, ...handlerChain);
       }
       logger.info(`Initialized route: ${routeMethod.toUpperCase()} ` +
         `${routePath} - ${filePath}`);
