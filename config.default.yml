@@ -1,0 +1,6 @@
+log:
+  trace: ./log/trace
+server:
+  port: 1337
+test:
+  loglevel: fatal

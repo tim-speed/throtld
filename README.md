@@ -7,7 +7,7 @@ Node based service for managing and throttling groups feature flags based on JSO
 * ID ( String: UUID )
 * Secret ( String )
 * Features ( Map )
-  * Name/Key ( String: `/^[\w\-]{1,255}$/` )
+  * Name/Key ( String: `/^[\w-]{1,255}$/` )
   * Segments ( Array )
     * Value ( String/Number/Boolean )
     * Weight ( Number )
@@ -17,7 +17,7 @@ Node based service for managing and throttling groups feature flags based on JSO
 * App ( String: UUID )
 * Expiry ( Number: Unix Timestamp )
 * Features ( Map )
-  * Name/Key ( String: `/^[\w\-]{1,255}$/` )
+  * Name/Key ( String: `/^[\w-]{1,255}$/` )
   * Value ( String/Number/Boolean )
 
 ## API ( TODO: Describe shared secret security )
@@ -52,7 +52,7 @@ Node based service for managing and throttling groups feature flags based on JSO
 **\>\>\>** `Encoded with shared secret ( config )`
 ```
 {
-  key: [Optional] ( String: /^[\w\-]{1,255}$/ ),
+  key: [Optional] ( String: /^[\w-]{1,255}$/ ),
   segments: [
     {
       value: ( String/Number/Boolean ),
@@ -67,7 +67,7 @@ Node based service for managing and throttling groups feature flags based on JSO
 **\>\>\>** `Encoded with shared secret ( config )`
 ```
 {
-  key: ( String: /^[\w\-]{1,255}$/ )
+  key: ( String: /^[\w-]{1,255}$/ )
 }
 ```
 **<<<** `HTTP 200`
