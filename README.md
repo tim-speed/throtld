@@ -41,8 +41,7 @@ Node based service for managing and throttling groups feature flags based on JSO
 **\>\>\>** `Encoded with shared secret ( config )`
 ```
 {
-  id: [Optional] ( String UUID ),
-  secret: ( String secret )
+  id: [Optional] ( String UUID )
 }
 ```
 **<<<** `HTTP 200`

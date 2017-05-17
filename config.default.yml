@@ -5,6 +5,8 @@ server:
 auth:
   strategy: secret
   algorithm: sha256
+  encryption: aes256
+  encoding: base64
   users:
 test:
   loglevel: fatal

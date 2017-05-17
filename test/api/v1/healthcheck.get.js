@@ -5,6 +5,7 @@ let request; require('../../../lib/testhelper').then(req => request = req);
 describe('GET /v1/healthcheck', function describeHealthcheckGet() {
   it('respond: I am well', function testHealthcheckIsWell(done) {
     request.get('/v1/healthcheck')
-        .expect('I am alive!', done);
+      .expect(200)
+      .expect('I am alive!', done);
   });
 });

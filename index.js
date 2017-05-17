@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const auth = require('./lib/auth');
+const middleware = require('./lib/middleware');
 const logger = require('./lib/logger')('init');
 
 // Init our express app
@@ -75,13 +76,20 @@ function createRoute(filePath, fileName, parentRoute) {
       const route = require(filePath);
       if (typeof route === 'function') {
         // Simple route
-        app[routeMethod](routePath, route);
+        app[routeMethod](routePath, middleware.handleContentEncoding,
+          middleware.buildJSONBody, route);
       } else {
         // Complex route
-        const handlerChain = [];
+        let handlerChain = [];
         // First set the auth handler if needed
         if (route.auth) {
           handlerChain.push(auth.authHandler);
+        }
+        // Handle content encoding
+        handlerChain.push(middleware.handleContentEncoding);
+        // Add in route defined middleware
+        if (route.middleware) {
+          handlerChain = [...handlerChain, ...route.middleware];
         }
         // Add our route handler at the end of the chain
         handlerChain.push(route.handler);
