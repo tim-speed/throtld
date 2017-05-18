@@ -1,6 +1,9 @@
+const database = require('../../lib/database');
+
 module.exports = {
   auth: true,
   handler(req, res) {
-    res.send(`I am alive! -- Hello ${req.session.user}`);
+    // Get all app ids for the authed user
+    res.send(database.getApps(req.session.user));
   }
 };

@@ -23,7 +23,6 @@ Node based service for managing and throttling groups feature flags based on JSO
 ## API ( TODO: Describe shared secret security )
 
 ### `POST /v1/app`
-
 **\>\>\>** `Encoded with shared secret ( config )`
 ```
 {
@@ -37,36 +36,50 @@ Node based service for managing and throttling groups feature flags based on JSO
 }
 ```
 
-### `DELETE /v1/app/:id`
+### `DELETE /v1/app`
 **\>\>\>** `Encoded with shared secret ( config )`
 ```
 {
-  id: [Optional] ( String UUID )
+  id: ( String UUID to identify App )
 }
 ```
 **<<<** `HTTP 200`
 
-### `PUT /v1/app/:id/feature/:key`
+### `GET /v1/apps`
+**<<<** `Encoded with shared secret ( config )`
+```
+[
+  ( App UUID ),
+  ( App UUID )...
+]
+```
 
+### `PUT /v1/app/feature/`
 **\>\>\>** `Encoded with shared secret ( config )`
 ```
 {
-  key: [Optional] ( String: /^[\w-]{1,255}$/ ),
-  segments: [
-    {
-      value: ( String/Number/Boolean ),
-      weight: ( Number )
-    }
-  ]
+  id: ( String UUID to identify App ),
+  feature: {
+    key: ( String: /^[\w-]{1,255}$/ ),
+    segments: [
+      {
+        value: ( String/Number/Boolean ),
+        weight: ( Number )
+      }
+    ]
+  }
 }
 ```
 **<<<** `HTTP 200`
 
-### `DELETE /v1/app/:id/feature`
+### `DELETE /v1/app/feature`
 **\>\>\>** `Encoded with shared secret ( config )`
 ```
 {
-  key: ( String: /^[\w-]{1,255}$/ )
+  id: ( String UUID to identify App ),
+  feature: {
+    key: ( String: /^[\w-]{1,255}$/ )
+  }
 }
 ```
 **<<<** `HTTP 200`
