@@ -54,7 +54,7 @@ Node based service for managing and throttling groups feature flags based on JSO
 ]
 ```
 
-### `PUT /v1/app/feature/`
+### `PUT /v1/app/feature`
 **\>\>\>** `Encoded with shared secret ( config )`
 ```
 {

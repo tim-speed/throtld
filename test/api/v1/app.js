@@ -1,7 +1,7 @@
+const validate = require('../../../lib/validate');
 // Wait and hoist supertest request, Mocha is blocked from execution until this
 //  completes
 let request; require('../../../lib/testhelper').then(req => request = req);
-const validate = require('../../../lib/validate');
 
 let createdAppId;
 

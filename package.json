@@ -4,6 +4,7 @@
   "description": "Node based service for managing and throttling groups feature flags based on JSON web tokens",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "mocha"
   },
   "repository": {
@@ -24,12 +25,12 @@
   "dependencies": {
     "express": "^4.15.2",
     "js-yaml": "^3.8.4",
-    "jsonwebtoken": "^7.4.0",
     "jws": "^3.1.4",
     "log4js": "^1.1.1",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
+    "assert": "^1.4.1",
     "mocha": "^3.3.0",
     "progress": "^2.0.0",
     "supertest": "^3.0.0"

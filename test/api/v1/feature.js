@@ -1,7 +1,7 @@
+const uuid = require('uuid');
 // Wait and hoist supertest request, Mocha is blocked from execution until this
 //  completes
 let request; require('../../../lib/testhelper').then(req => request = req);
-const uuid = require('uuid');
 
 const FEATURE_KEY = 'test_Feature-1';
 

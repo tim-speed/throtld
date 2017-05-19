@@ -7,6 +7,8 @@ auth:
   algorithm: sha256
   encryption: aes256
   encoding: base64
+  jwt:
+    maxExpiryTimeMS: 31536000000 # 1000×60×60×24×365=1 Year
   users:
 test:
   loglevel: fatal
