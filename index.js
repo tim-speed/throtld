@@ -25,6 +25,12 @@ module.exports = Promise.all([
   logger.error(`throtld failed to start: ${err}`);
 });
 
+// Promise debugging
+process.on('unhandledRejection', function unhandledPromise(reason) {
+  logger.fatal(`Unhandled promise rejection: ${reason.stack}`);
+  process.exit(1);
+});
+
 /**
  * Helper function to traverse a directory and create routes based on the files
  */
@@ -68,13 +74,11 @@ function findAndCreateRoutes(dirPath, parentRoute = []) {
  */
 function createRoute(filePath, fileName, parentRoute) {
   return new Promise((resolve, reject) => {
-    let [routeName, routeMethod] = fileName.split('.');
-    const routePath = parentRoute.length ?
-      `/${parentRoute.join('/')}/${routeName}` : `/${routeName}`;
-    try {
-      // Route setup
-      const route = require(filePath);
-      if (typeof route === 'function') {
+    function setupRoute(route) {
+      if (route instanceof Promise) {
+        // Wait for the route to resolve first
+        return route.then(setupRoute);
+      } else if (typeof route === 'function') {
         // Simple route
         app[routeMethod](routePath, middleware.handleContentEncoding,
           middleware.buildJSONBody, route);
@@ -105,6 +109,14 @@ function createRoute(filePath, fileName, parentRoute) {
         file: filePath,
         config: route
       });
+    }
+
+    let [routeName, routeMethod] = fileName.split('.');
+    const routePath = parentRoute.length ?
+      `/${parentRoute.join('/')}/${routeName}` : `/${routeName}`;
+    try {
+      // Route setup
+      setupRoute(require(filePath));
     } catch (ex) {
       logger.error(`Failed to load route: ${routeMethod.toUpperCase()} ` +
         `${routePath} - ${filePath}: ${ex}`);

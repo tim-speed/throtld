@@ -1,4 +1,5 @@
 const validate = require('../../../lib/validate');
+const logger = require('../../../lib/logger')('test-api-v1-app');
 // Wait and hoist supertest request, Mocha is blocked from execution until this
 //  completes
 let request; require('../../../lib/testhelper').then(req => request = req);
@@ -14,7 +15,8 @@ describe('POST /v1/app', function() {
       })
       .expect(200)
       .then(res => {
-        if (!validate.isUUID(res.body.id)) {
+        if (!validate.isMongoObjectID(res.body.id)) {
+          logger.debug(`Bad return: ${JSON.stringify(res.body, null, 2)}`);
           return done('Route did not return a valid App Id.');
         }
         createdAppId = res.body.id;
@@ -29,8 +31,9 @@ describe('GET /v1/apps', function() {
       .auth()
       .expect(200)
       .then(res => {
-        if (!res.body || !validate.isUUID(res.body[0]) ||
-         res.body[0] !== createdAppId) {
+        if (!res.body || !validate.isMongoObjectID(res.body[0].id) ||
+         res.body[0].id !== createdAppId) {
+          logger.debug(`Bad return: ${JSON.stringify(res.body, null, 2)}`);
           return done('Route did not return an array with our App Id.');
         }
         done();
@@ -53,7 +56,7 @@ describe('DELETE /v1/app', function() {
       .sendEncrypted({
         id: createdAppId
       })
-      .expect(500, done);
+      .expect(403, done);
   });
 });
 

@@ -1,4 +1,3 @@
-const uuid = require('uuid');
 // Wait and hoist supertest request, Mocha is blocked from execution until this
 //  completes
 let request; require('../../../lib/testhelper').then(req => request = req);
@@ -65,7 +64,7 @@ describe('PUT /v1/app/feature', function() {
     request.put('/v1/app/feature')
       .auth()
       .sendEncrypted({
-        id: uuid.v4(),
+        id: 'I_DO_NOT_EXIST',
         feature: {
           key: FEATURE_KEY,
           segments: [

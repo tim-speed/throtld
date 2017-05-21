@@ -1,5 +1,5 @@
 const assert = require('assert');
-const logger = require('../../../lib/logger')('test-features');
+const logger = require('../../../lib/logger')('test-api-v1--features');
 // Wait and hoist supertest request, Mocha is blocked from execution until this
 //  completes
 let request; require('../../../lib/testhelper').then(req => request = req);
@@ -96,7 +96,8 @@ describe('GET /v1/features', function() {
         app: createdAppId,
         alg: 'HS256'
       }, {})
-      .expect(400, done);
+      .expect(400)
+      .then(() => done(), done);
   });
   it('should fail to get features for user from JWT without subject',
    function(done) {
@@ -107,7 +108,8 @@ describe('GET /v1/features', function() {
       }, {
         exp: Date.now() + (60 * 1000)
       })
-      .expect(400, done);
+      .expect(400)
+      .then(() => done(), done);
   });
   let features;
   it('should get features for user from JWT', function(done) {

@@ -1,6 +1,7 @@
-const database = require('../../lib/database');
+const db = require('../../lib/db');
 const auth = require('../../lib/auth');
 const middleware = require('../../lib/middleware');
+const logger = require('../../lib/logger')('POST /v1/app');
 
 module.exports = {
   auth: true,
@@ -11,8 +12,14 @@ module.exports = {
   handler(req, res) {
     // Create app with secret
     // And return AppId
-    res.send({
-      id: database.createApp(req.session.user, req.body.secret)
+    db.app.create(req.session.account._id, req.body.secret).then((id) => {
+      res.send({
+        id
+      });
+    }, (err) => {
+      logger.error(
+        `Failed to create new app for account="${req.session.account._id}"`);
+      res.status(500).send('Failed to add account to the database.');
     });
   }
 };

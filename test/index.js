@@ -2,9 +2,16 @@
 
 const fs = require('fs');
 const path = require('path');
+const logger = require('../lib/logger')('mocha-init');
 
 let _loadedTests = {};
 let _require = require;
+
+// Promise debugging
+process.on('unhandledRejection', function unhandledPromise(reason) {
+  logger.fatal(`Unhandled promise rejection: ${reason.stack}`);
+  process.exit(1);
+});
 
 /**
  * Simple require alternative that preserves scope

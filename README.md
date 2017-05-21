@@ -49,8 +49,10 @@ Node based service for managing and throttling groups feature flags based on JSO
 **<<<** `Encoded with shared secret ( config )`
 ```
 [
-  ( App UUID ),
-  ( App UUID )...
+  {
+    id: ( App UUID ),
+    accountId: ( OwnerId )
+  }...
 ]
 ```
 

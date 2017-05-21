@@ -2,6 +2,8 @@ log:
   trace: ./log/trace
 server:
   port: 1337
+db:
+  mongoURI: 'mongodb://127.0.0.1:27017/throtld'
 auth:
   strategy: secret
   algorithm: sha256
@@ -9,8 +11,12 @@ auth:
   encoding: base64
   jwt:
     maxExpiryTimeMS: 31536000000 # 1000×60×60×24×365=1 Year
-  users:
 test:
   loglevel: fatal
-  users:
+  mongoURI: 'mongodb://127.0.0.1:27017/throtld-test'
+  accounts:
     tony-the-tester: "They are grrrrreat! I swear, for real okay."
+  clearCollections:
+    - account
+    - app
+    - user
