@@ -23,11 +23,13 @@
   },
   "homepage": "https://github.com/tim-speed/throtld#readme",
   "dependencies": {
+    "@manifoldco/signature": "^1.1.0",
     "express": "^4.15.2",
     "js-yaml": "^3.8.4",
     "jws": "^3.1.4",
     "log4js": "^1.1.1",
-    "mongodb": "^2.2.26"
+    "mongodb": "^2.2.26",
+    "passport": "^0.3.2"
   },
   "devDependencies": {
     "assert": "^1.4.1",

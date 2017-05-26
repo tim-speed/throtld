@@ -19,6 +19,10 @@ module.exports = Promise.all([
       logger.info(`throtld now listening on port ${config.server.port}!`);
       resolve(app);
     });
+    // Route debugging
+    app.use((req, res) => {
+      logger.trace(`Unhandled request: ${req.method} ${req.path}`);
+    });
     // TODO: Add reject??? on fail?
   });
 }, (err) => {
@@ -74,6 +78,17 @@ function findAndCreateRoutes(dirPath, parentRoute = []) {
  */
 function createRoute(filePath, fileName, parentRoute) {
   return new Promise((resolve, reject) => {
+    let routeName, routeMethod, routePath;
+    if (fileName[0] === '_') {
+      routeName = parentRoute[parentRoute.length - 1];
+      [routeMethod] = fileName.substr(1).split('.');
+      routePath = `/${parentRoute.join('/')}/:id`;
+    } else {
+      [routeName, routeMethod] = fileName.split('.');
+      routePath = parentRoute.length ?
+        `/${parentRoute.join('/')}/${routeName}` : `/${routeName}`;
+    }
+
     function setupRoute(route) {
       if (route instanceof Promise) {
         // Wait for the route to resolve first
@@ -82,7 +97,7 @@ function createRoute(filePath, fileName, parentRoute) {
         // Simple route
         app[routeMethod](routePath, middleware.handleContentEncoding,
           middleware.buildJSONBody, route);
-      } else {
+      } else if (route.handler) {
         // Complex route
         let handlerChain = [];
         // First set the auth handler if needed
@@ -99,6 +114,10 @@ function createRoute(filePath, fileName, parentRoute) {
         handlerChain.push(route.handler);
         // Finally set the route
         app[routeMethod](routePath, ...handlerChain);
+      } else {
+        logger.warn(`Uninitialized route: ${routeMethod.toUpperCase()} ` +
+          `${routePath} - ${filePath}: Does not export a valid route.`);
+        return resolve(null);
       }
       logger.info(`Initialized route: ${routeMethod.toUpperCase()} ` +
         `${routePath} - ${filePath}`);
@@ -110,16 +129,12 @@ function createRoute(filePath, fileName, parentRoute) {
         config: route
       });
     }
-
-    let [routeName, routeMethod] = fileName.split('.');
-    const routePath = parentRoute.length ?
-      `/${parentRoute.join('/')}/${routeName}` : `/${routeName}`;
     try {
       // Route setup
       setupRoute(require(filePath));
     } catch (ex) {
       logger.error(`Failed to load route: ${routeMethod.toUpperCase()} ` +
-        `${routePath} - ${filePath}: ${ex}`);
+        `${routePath} - ${filePath}: ${ex.stack}`);
       reject(ex);
     }
   });

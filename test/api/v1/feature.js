@@ -64,7 +64,7 @@ describe('PUT /v1/app/feature', function() {
     request.put('/v1/app/feature')
       .auth()
       .sendEncrypted({
-        id: 'I_DO_NOT_EXIST',
+        id: '111111111111111111111111',
         feature: {
           key: FEATURE_KEY,
           segments: [
