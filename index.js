@@ -11,6 +11,7 @@ const app = express();
 // Get config an routes, then start the server
 module.exports = Promise.all([
   require('./lib/config'),
+  require('./lib/db').promise,
   findAndCreateRoutes('./api')
 ]).then(([config, routes]) => {
   return new Promise((resolve, reject) => {
